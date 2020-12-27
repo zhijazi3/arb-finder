@@ -16,15 +16,15 @@ const server = http.createServer(app).listen(PORT, () => console.log(`Listening 
 
 // WEB3 CONFIG
 const web3 = new Web3(process.env.UNI_RPC_URL)
-const dai_address = '0x6b175474e89094c44da98b954eedeac495271d0f'
 
 // import kyber and uni abos stored in abis folder
 const abis = require('./abis');
 
+// import addresses
+const { mainnet: addresses } = require('./addresses');
 
 
-UNISWAP_ROUTER_ADDRESS = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D'
-
+UNISWAP_ROUTER_ADDRESS = addresses.uniswap.router
 
 function playSound1() {
   const player = require('play-sound')();
@@ -45,7 +45,7 @@ async function checkUniPrices(args) {
 
   const routerContract = new web3.eth.Contract(abis.uni, UNISWAP_ROUTER_ADDRESS)
 
-  const eth_data = await routerContract.methods.getAmountsOut(inputAmount, [tokenSwapAddress, dai_address]).call()
+  const eth_data = await routerContract.methods.getAmountsOut(inputAmount, [tokenSwapAddress, addresses.tokens.dai]).call()
   const token_data = await routerContract.methods.getAmountsOut(inputAmount, [tokenAddress, tokenSwapAddress]).call()
 
   const ethPrice = parseFloat(web3.utils.fromWei(eth_data[1], 'Ether'))
