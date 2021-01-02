@@ -9,6 +9,8 @@ const numeral = require('numeral')
 const _ = require('lodash')
 const axios = require('axios')
 
+
+
 // SERVER CONFIG
 const PORT = process.env.PORT || 7000
 const app = express();
@@ -86,7 +88,7 @@ async function checkUniswapToKyber(args) {
 
 
 
-  if(rate_diff > .05) {
+  if(rate_diff > .1) {
 
     console.log("ARB OPPURTUNITY!!! ", tokenSymbol, "Rate Diff =>", rate_diff)
     console.log("Uniswap ", tokenSymbol, ": =>", uni_current_usd)
