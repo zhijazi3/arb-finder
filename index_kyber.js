@@ -126,14 +126,14 @@ async function queryUniswap(name, contract){
     const coin_sell = await routerContract.methods.getAmountsOut(convertToWei(1), [contract[0], addresses.tokens.weth]).call()
 
 
-    console.log(convertFromWei(eth_sell[1]))
+  //  console.log(convertFromWei(eth_sell[1]))
     const uni_eth_rates = {
       buy: parseFloat(1/(convertFromWei(eth_buy[1]))),
       sell: parseFloat(convertFromWei(eth_sell[1]))
       }
 
     uni_eth_rates['spot'] = ((uni_eth_rates.buy + uni_eth_rates.sell)/2)
-    console.log(`Eth Buy ${uni_eth_rates.buy} Eth Sell: ${uni_eth_rates.sell} Eth Spot ${uni_eth_rates.spot}`)
+    //console.log(`Eth Buy ${uni_eth_rates.buy} Eth Sell: ${uni_eth_rates.sell} Eth Spot ${uni_eth_rates.spot}`)
 
     const coin_rates = {
       buy: parseFloat((.01*uni_eth_rates.spot)/(convertFromWei(coin_buy[1]))),
@@ -144,17 +144,59 @@ async function queryUniswap(name, contract){
     tokens[name][1]['uni'][0] = coin_rates.buy;
     tokens[name][1]['uni'][1] = coin_rates.sell;
     tokens[name][1]['uni'][2] = coin_rates.spot;
-    console.log(tokens[name])
+  //  console.log(tokens[name])
 
 
 
 };
 
+async function checkArb() {
+
+
+  for (let k in tokens) {
+    console.log(`     **** ${k} ****`)
+    //console.log(tokens[k][1])
+    const profit1 = tokens[k][1]['kyber'][1] - tokens[k][1]['uni'][0]
+    const profit2 =  tokens[k][1]['uni'][1] - tokens[k][1]['kyber'][0]
+
+    if (profit1 > 0) {
+
+      change1 = profit1 / ((tokens[k][1]['kyber'][2] + tokens[k][1]['uni'][2])/2)
+      if (change1 > .01) {
+        console.log('ARB OPPURTUNITY FOUND!!!')
+        console.log(`Buy ${k} on Kyber and sell on unsiwap.`)
+        console.log(change1)
+      }
+    } else if (profit2 > 0) {
+      change2 = profit2 / ((tokens[k][1]['kyber'][2] + tokens[k][1]['uni'][2])/2)
+      if (change2 > .01) {
+        console.log('ARB OPPURTUNITY FOUND!!!')
+        console.log(`Buy ${k} on Uniswap and sell on Kyber.`)
+        console.log(change2)
+      }
+    }
+    console.log(profit1)
+    console.log(profit2)
+
+  }
+
+
+}
+
 async function getSpotPrice() {
   for (let k in tokens) {
-    queryKyber(k, tokens[k])
-    queryUniswap(k, tokens[k])
+    await queryKyber(k, tokens[k])
+    await queryUniswap(k, tokens[k])
+
   }
+  await checkArb()
+
 }
 
 getSpotPrice()
+
+
+// Check markets every n seconds
+const POLLING_INTERVAL = 6000 // set time delay
+
+priceMonitor = setInterval(async () => { await getSpotPrice() }, POLLING_INTERVAL)
