@@ -69,7 +69,7 @@ async function checkUniPrices(args) {
         setTimeout(playSound1, 4000)
       } else {
         x=1
-        //playSound2()
+        playSound2()
       }
 
     }  else {
@@ -101,7 +101,9 @@ const tokensA={
   "PTF":   [ "0xc57d533c50bc22247d49a368880fb49a1caa39f7", 1],
   "DHT":  ["0xca1207647ff814039530d7d35df0e1dd2e91fa84", 1],
   "SPI":  ["0x9b02dd390a603add5c07f9fd9175b7dabe8d63b7", 1],
-  "DIP":  ["0xc719d010b63e5bbf2c0551872cd5316ed26acd83", 1]
+  "DIP":  ["0xc719d010b63e5bbf2c0551872cd5316ed26acd83", 1],
+  "PIS": ["0x834ce7ad163ab3be0c5fd4e0a81e67ac8f51e00c", 1],
+  "POOP": ["0x83e6f1e41cdd28eaceb20cb649155049fac3d5aa", 1]
 };
 
 const tokensB={
