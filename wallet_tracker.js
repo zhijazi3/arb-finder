@@ -83,15 +83,7 @@ function playSound1() {
 }
 
 const array = [
-  '0x0045666d334c90c63b9a9f124609dbbc9cfae383', // shark1
-  '0x5cce781898C6b6d790525ef10c5863b2d1afd47a',  // Shark2
-  '0xf7fc1e773f4d08f4201eb6ce0e359678722649c6', // Pepe
-  '0xaa2d4dcc8699af66445072f92e0eb95537497ab6',  //Ellio
-  '0x3348ab694374cd5dc48c2da5b305176b43e2fd03', // whale
-  '0x66aeeadd49026a7cfbde0240a7b148f18966b7b7', // Related to Pepe
-  '0xc0548825bd34b96448b487ed7028cf6b532228f9', // Basically Me
-  '0xefb0212d1068082f730cbb89d700038d3937f88a', // Related to Ellio
-  '0x00336cd9f823dd8b5c5741638e5038fd561f01b9' // Me
+// Addresses to track
 ];
 
 let txChecker = new TransactionChecker(array);
